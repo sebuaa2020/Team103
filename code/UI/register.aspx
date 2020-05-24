@@ -1,23 +1,20 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="register.aspx.cs" Inherits="our.ui.register" %>
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <meta name="description" content="">
-    <meta name="author" content="">
+<!DOCTYPE html>
+
+<!--注册界面设计，主要是接收注册的用户的账户名、ID和密码；
+    注册提交则提示成功，3秒自动跳转到登录界面
+    异常：查询用户名是否存在，存在则不能注册；用户名和密码均为字符串且非空
+    -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>注册</title>
     <link rel="shortcut icon" href="logo.ico" />
     <style type="text/css">
-        a {
-            text-decoration: none;
-        }
-
-            a:hover {
-                text-decoration: none
-            }
+        a {text-decoration: none;}
+        a:hover{ text-decoration:none}
     </style>
 </head>
 
@@ -31,12 +28,13 @@
         body {
             background: url("xingshi.png");
             background-repeat: no-repeat;
-            height: 100px;
             background-size: 397px 357px;
+            background-position-y: 120px;
+            
         }
     </style>
 
-    <div class="shadow" align="center">
+    <div class="shadow" style="text-align:center">
         <div class="boder1">
             <style type="text/css">
                 .boder1 {
@@ -59,23 +57,23 @@
                 <form class="form-horizontal" role="form" method="post" action="">
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" style="color:#000000; font-size:16px">用户名</label>
+                        <label class="col-sm-2 control-label" style="color:#000000; font-size:16px;font-weight:600;">用户名</label>
                         <div class="col-sm-10">
-                            <input class="form-control" style="height:20px" id="focusedInput" type="text" name="username" placeholder="username" required="">
+                            <input class="form-control" style="height:20px" id="focusedInput1" type="text" name="username" placeholder="username" required=""/>
                         </div>
                     </div>
                     <br />
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" style="color:#000000; font-size:16px">用户ID</label>
+                        <label class="col-sm-2 control-label" style="color:#000000; font-size:16px;font-weight:600">用户ID</label>
                         <div class="col-sm-10">
-                            <input class="form-control" style="height:20px" id="focusedInput" type="text" name="username" placeholder="user ID" required="">
+                            <input class="form-control" style="height:20px" id="focusedInput2" type="text" name="user ID" placeholder="user ID" required=""/>
                         </div>
                     </div>
                     <br />
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" style="color: #000000;font-size: 16px">密码</label>
+                        <label class="col-sm-2 control-label" style="color: #000000;font-size: 16px;font-weight:600">密码</label>
                         <div class="col-sm-10">
-                            <input type="password" style="height:20px" id="inputPassword" class="form-control" name="password" placeholder="password" required="">
+                            <input type="password" style="height:20px" id="inputPassword" class="form-control" name="password" placeholder="password" required=""/>
                         </div>
                     </div>
                     <br />
@@ -92,10 +90,17 @@
         </div>
     </div>
 
-    <div class="myUrl" align="center" style="position:fixed; bottom:20px;text-align:center;width:100%;line-height: 20px;">
+    <div class="myUrl" style="position: fixed;
+            font-weight:700;
+            font-size:80%;
+            bottom: 20px;
+            text-align: center;
+            width: 100%;
+            line-height: 20px;
+            text-align: center">
         <label style="">Copyright ©2020 ROS启智</label>
         <br />
-        <a href="login.html" target="_self" style="">主页&nbsp;&nbsp;</a>
+        <a href="login.aspx" target="_self" style="">主页&nbsp;&nbsp;</a>
         <a href="contact.html" target="_blank"> 联系我们</a>
     </div>
 </body>

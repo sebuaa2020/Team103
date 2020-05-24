@@ -11,7 +11,7 @@ namespace our.ui
 {
 
 
-    public partial class login
+    public partial class myTask
     {
 
         /// <summary>
