@@ -8,38 +8,36 @@ using namespace std;
 
 int main(int argc, char** argv) {     
     ros::init(argc, argv, "speak_node"); 
-    ROS_INFO_STREAM("start program");
     ros::NodeHandle n;    
     ros::Publisher tts_pub = n.advertise<sound_play::SoundRequest>("/robotsound", 20);    
-    ros::Rate r(0.2);     
-    while(n.ok()) {         
+    ros::Rate r(0.2);  
+    int number = 0;   
+    while(n.ok() && number++ < 2) {         
         sound_play::SoundRequest sp;         
         sp.sound = sound_play::SoundRequest::SAY;         
         sp.command = sound_play::SoundRequest::PLAY_ONCE; 
         sp.volume = 1.0;  
         Py_Initialize();
         PyRun_SimpleString("import sys");
-        PyRun_SimpleString("sys.path.append('./')");
-        PyObject * pModule = NULL;
-        PyObject * pFunc = NULL;
-
-        pModule = PyImport_ImportModule("getWeather");
-        if (pModule == NULL)
+        PyRun_SimpleString("sys.path.append('/home/daohaotaitaoyan/catkin_ws/src/my_speak_package/src/')");  
+        PyObject *module = PyString_FromString("getWeather");
+        PyObject *pyModule = PyImport_Import(module);
+        if (!pyModule)
         {
-            ROS_INFO_STREAM("python module not found");
+            ROS_WARN("python module not found");
         }
 
-        pFunc = PyObject_GetAttrString(pModule, "getweather");
-        PyObject* pRet = PyObject_CallObject(pFunc, NULL);
+        PyObject *pyfun = PyObject_GetAttrString(pyModule, "getweather");
+        PyObject* pyRet = PyObject_CallObject(pyfun, NULL);
         char *temp1;
         char *temp2;
-        PyArg_ParseTuple(pRet, "ss", &temp1, &temp2);
+        PyArg_ParseTuple(pyRet, "ss", &temp1, &temp2);
         Py_Finalize();
         string ltemp = temp1;
         string htemp = temp2;
-        ROS_INFO_STREAM(ltemp);
+        ROS_WARN("temperature output: %s %s", ltemp.c_str(),htemp.c_str());
 
-        sp.arg = "low temperature"; 
+        sp.arg = "low temperature "+ ltemp + "high temperature " + htemp; 
         tts_pub.publish(sp);          
         ros::spinOnce();        
         r.sleep();    
