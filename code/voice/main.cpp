@@ -69,6 +69,7 @@ string getVoiceInstr(){
         cout<<"rolaunch error"<<endl;
     }
     cout<<"wait for the robot answer then continue"<<endl;
+    getchar();
     //system("bash -c 'pause'");
     ifstream keyword;
     keyword.open("/home/daohaotaitaoyan/catkin_ws/keyword.txt");
