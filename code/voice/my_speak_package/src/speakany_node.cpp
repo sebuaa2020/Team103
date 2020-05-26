@@ -4,6 +4,7 @@
 #include <iostream>
 
 using namespace std;
+bool islegal(string sentence);
 int main(int argc, char** argv) {    
     ros::init(argc, argv, "speakany_node"); 
     ROS_INFO("start speaking");
@@ -12,6 +13,10 @@ int main(int argc, char** argv) {
     ros::Rate r(0.2);     
     string speak_word;
     ros::param::get("~speak_word",speak_word);
+    if (!islegal(speak_word)) {
+        ROS_WARN("cannot speak this");
+        return 0;
+    }
     int number = 0;
     while(n.ok() && number++ <2) {     
         sound_play::SoundRequest sp;         
@@ -25,3 +30,15 @@ int main(int argc, char** argv) {
     }     
     return 0; 
 } 
+
+bool islegal(string sentence){
+    for (int i=0;i<sentence.size();i++){
+        char temp = sentence[i];
+        if ((temp >= 'a' && temp <= 'z') || (temp >= 'A' && temp <= 'Z') || temp == ' '){
+            continue;
+        } else {
+            return false;
+        }
+    }
+    return true;
+}
