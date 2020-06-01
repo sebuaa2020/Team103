@@ -3,6 +3,7 @@
 #include <string>
 #include <python2.7/Python.h>
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -11,6 +12,11 @@ int main(int argc, char** argv) {
     ros::NodeHandle n;    
     ros::Publisher tts_pub = n.advertise<sound_play::SoundRequest>("/robotsound", 20);    
     ros::Rate r(0.2);  
+
+    ofstream weatherInfo;
+    weatherInfo.open("/home/daohaotaitaoyan/catkin_ws/weatherInfo.txt");
+    weatherInfo.flush();
+
     int number = 0;   
     while(n.ok() && number++ < 2) {         
         sound_play::SoundRequest sp;         
@@ -37,8 +43,12 @@ int main(int argc, char** argv) {
         string htemp = temp2;
         ROS_WARN("temperature output: %s %s", ltemp.c_str(),htemp.c_str());
 
-        sp.arg = "low temperature "+ ltemp + "high temperature " + htemp; 
-        tts_pub.publish(sp);          
+        sp.arg = "low temperature "+ ltemp + " high temperature " + htemp; 
+        tts_pub.publish(sp);    
+
+        weatherInfo << "low temperature "+ ltemp + " high temperature " + htemp + "\n";
+        weatherInfo.close();
+
         ros::spinOnce();        
         r.sleep();    
     }     

@@ -15,7 +15,8 @@ int main(int argc, char** argv) {
     ros::param::get("~speak_word",speak_word);
     if (!islegal(speak_word)) {
         ROS_WARN("cannot speak this");
-        return 0;
+        ros::shutdown();
+        return -1;
     }
     int number = 0;
     while(n.ok() && number++ <2) {     
@@ -28,6 +29,7 @@ int main(int argc, char** argv) {
         ros::spinOnce();         
         r.sleep();     
     }     
+    ros::shutdown(); 
     return 0; 
 } 
 
