@@ -45,7 +45,7 @@ using namespace std;
 #define CMD_FORWARD     1
 #define CMD_BACKWARD    2  
 #define CMD_LEFT        3
-#define CMD_RIGHT       4   
+#define CMD_RIGHT       4  
 
 #define CMD_DURATION    30
 
@@ -53,6 +53,7 @@ using namespace std;
 static ros::Publisher spk_pub;
 static int nCmd = CMD_STOP;
 static int nCount = 0;
+static int err = 0;
 
 void KeywordCB(const std_msgs::String::ConstPtr & msg)
 {
@@ -68,7 +69,7 @@ void KeywordCB(const std_msgs::String::ConstPtr & msg)
 
     bool bCmd = false;
     int nFindIndex = 0;
-    nFindIndex = msg->data.find("front");
+    nFindIndex = msg->data.find("Front");
     if( nFindIndex >= 0 )
     {
         //ROS_WARN("[KeywordCB] - move x");
@@ -76,7 +77,7 @@ void KeywordCB(const std_msgs::String::ConstPtr & msg)
         nCmd = CMD_FORWARD;
 
     }
-    nFindIndex = msg->data.find("后");
+    nFindIndex = msg->data.find("Back");
     if( nFindIndex >= 0 )
     {
         //ROS_WARN("[KeywordCB] - move -x");
@@ -118,6 +119,7 @@ void KeywordCB(const std_msgs::String::ConstPtr & msg)
     else
     {
         ROS_WARN("CMD not exists");
+        err = 1;
         //strSpeak = *msg;
     }
     
@@ -134,6 +136,7 @@ int main(int argc, char** argv)
     ofstream keyword;
     keyword.open("/home/daohaotaitaoyan/catkin_ws/keyword.txt");
     keyword.flush();
+
     ros::Rate r(10);
     //int number = 0;
     while(ros::ok())
@@ -147,12 +150,14 @@ int main(int argc, char** argv)
                 //vel_cmd.linear.x = 0.1;
                 //ROS_WARN("forward");
                 keyword << "CMD_FORWARD\n";
+                keyword.close();
             }
             if(nCmd == CMD_BACKWARD)
             {
                 //vel_cmd.linear.x = -0.1;
                 //ROS_WARN("backward");
-                keyword << "CMD_BACKWARD";
+                keyword << "CMD_BACKWARD\n";
+                keyword.close();
             }
             if(nCmd == CMD_LEFT)
             {
@@ -164,27 +169,33 @@ int main(int argc, char** argv)
                 //vel_cmd.angular.z = -0.1;
                 //ROS_WARN("right");
             }
-            if(nCmd == CMD_STOP)
+            if(nCmd == CMD_STOP) //real stop cmd
             {
                 //vel_cmd.linear.x = 0;
                 //vel_cmd.linear.y = 0;
                 //vel_cmd.angular.z = 0;
                 //ROS_WARN("stop");
             }
+            
         }
-        else
+        else // when cmd not exists;CMD_STOP is moren
         {
+            if (err == 1){
+                keyword <<"ERROR\n";
+                keyword.close();
+            }
             nCmd = CMD_STOP;
             //vel_cmd.linear.x = 0;
             //vel_cmd.linear.y = 0;
             //vel_cmd.angular.z = 0;
             //ROS_WARN("stop");
+            
         }
         //vel_pub.publish(vel_cmd);
         ros::spinOnce();
         r.sleep();
     }
-    keyword.close();
-
+    ROS_WARN("i can't run till here");
+    
     return 0;
 }

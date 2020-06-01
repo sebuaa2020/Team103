@@ -1,3 +1,4 @@
+#include "voice_cmd.h"
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,20 +7,7 @@
 #include <fstream>
 
 using namespace std;
-
-char* broadCastWeather();
-void broadCastAny(char* word);
-char* getVoiceInstr();
-
-int main()
-{
-    char test[1024];
-    strcpy(test, getVoiceInstr());
-    //broadCastAny("hello world");
-    //strcpy(test, broadCastWeather());
-    cout<<test<<endl;
-    return 0;
-}
+extern "C"
 
 char* broadCastWeather(){
     system("rm /home/daohaotaitaoyan/catkin_ws/weatherInfo.txt");
