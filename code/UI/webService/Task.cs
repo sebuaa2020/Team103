@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace our.webService
 {
@@ -12,27 +13,24 @@ namespace our.webService
 		/// 任务类的属性以及数据交互
 		/// 相应的任务对应的操作
 		/// </summary>
-		[DllImport("Tach.dll", EntryPoint = "sum", CharSet = CharSet.Ansi,
-			CallingConvention = CallingConvention.StdCall)]
+		[DllImport("libslam.so")]
 		public static extern int slamStart();
-		[DllImport("Tach.dll", EntryPoint = "sum", CharSet = CharSet.Ansi,
-			CallingConvention = CallingConvention.StdCall)]
+		[DllImport("libslam.so")]
 		public static extern int getSlam();
-		[DllImport("Tach.dll", EntryPoint = "sum", CharSet = CharSet.Ansi,
+		[DllImport("libnva.so")]
+		
+		//[DllImport("weather.so")]
+		public static extern string broadCastWeather();
+		[DllImport("Tach.so", EntryPoint = "main", CharSet = CharSet.Ansi,
 			CallingConvention = CallingConvention.StdCall)]
-		public static extern void broadCastWeather();
-		[DllImport("Tach.dll", EntryPoint = "sum", CharSet = CharSet.Ansi,
-			CallingConvention = CallingConvention.StdCall)]
-		public static extern void broadCastAny();
+		public static extern string voiceInput();
 
-		private int no;
-		private User user;
-		private Instr instruction;
-		private bool isFinished;
-		private DateTime time;
+		public int no;
+		public int user_no;
+		public int instr_no;
+		public bool isFinished;
+		public DateTime time;
 
-		string[] INSTR_STR = { "STARTSLAM", "GETSLAM", "FORWOARD", "LEFT", "RIGHT",
-			"BACK", "BROADCASTWEATHER", "BROADCASTANY", "CAPTURE" };
 		public int getNo()
 		{
 			return no;
@@ -41,27 +39,27 @@ namespace our.webService
 		{
 			this.no = no;
 		}
-		public User getUser()
+		public int getUserNo()
 		{
-			return user;
+			return user_no;
 		}
-		public void setUser(User user)
+		public void setUserNo(int no)
 		{
-			this.user = user;
+			this.user_no = no;
 		}
-		public Instr getInstr()
+		public int getInstrNo()
 		{
-			return instruction;
+			return instr_no;
 		}
-		public void setInstr(Instr instruction)
+		public void setInstrNo(int no)
 		{
-			this.instruction = instruction;
+			this.instr_no = no;
 		}
-		public bool getIsFinshed()
+		public bool getIsFinished()
 		{
 			return isFinished;
 		}
-		public void setIsPayed(bool isFinished)
+		public void setIsFinished(bool isFinished)
 		{
 			this.isFinished = isFinished;
 		}
@@ -76,7 +74,7 @@ namespace our.webService
 		}
 		public string toString()
 		{
-			return "Task [no=" + no + ", user=" + user + ", instr=" + instruction
+			return "Task [no=" + no + ", user_no=" + user_no + ", instr_no=" + instr_no
 					+ ", isFinshed=" + isFinished + ", time=" + time + "]";
 		}
 
@@ -84,48 +82,50 @@ namespace our.webService
 		/// 用户预定的任务的相应操作
 		/// </summary>
 		/// <param name="instr"></param>
-		public void func(string instr)
+		public string func(int instr, string goal, string dis, string pi)
 		{
-
-
-
-			if (instr == INSTR_STR[0]) // 开始建图
+			
+			if (instr == 6) // 开始建图
 			{
-
+				return "建图成功！";
 			}
-			else if (instr == INSTR_STR[1])
+			else if (instr == 7) // 保存建图
+            {
+				return "保存建图成功！";
+			}
+			else if (instr == 8) // 确认导航点
+            {
+				return "确认成功！";
+			}
+			else if (instr == 9) // 保存导航点
 			{
-
+				return "保存成功！";
 			}
-			else if (instr == INSTR_STR[2])
+			else if (instr == 10) // 重命名导航点
 			{
-
+				return "重命名成功！";
 			}
-			else if (instr == INSTR_STR[3])
+			else if (instr == 1) // 导航
 			{
-
+				return "导航成功！";
 			}
-			else if (instr == INSTR_STR[4])
+			else if (instr == 2) // 移动
 			{
-
+				return "移动成功！";
 			}
-			else if (instr == INSTR_STR[5])
+			else if (instr == 3) // 抓取
 			{
-
+				return "抓取成功！";
 			}
-			else if (instr == INSTR_STR[6])
+			else if (instr == 4) // 天气
 			{
-				broadCastWeather();
+				return broadCastWeather();
 			}
-			else if (instr == INSTR_STR[7])
+			else if (instr == 5) // 语音
 			{
-				broadCastAny();
+				return "执行成功！";
 			}
-			else if (instr == INSTR_STR[8])
-			{
-
-			}
-
+			return "error!";
 		}
 	}
 }

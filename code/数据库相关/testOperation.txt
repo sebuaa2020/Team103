@@ -1,0 +1,22 @@
+string INSERT_TASK_SQL = "insert into T_TASK values ('" + user_no + "', '" + instr_no + "', '" + "1', '" + time + "')";
+
+string GET_TASKLIST_SQL = "select * from t_user u, t_instr i, t_task t where u.U_NO=t.T_U_NO and i.I_NO=t.T_I_NO and U_NO=" + user_no;
+			
+string DELETE_TASK_SQL = "delete from T_task where (T_NO='" + t_no + "' and T_U_NO='" + u_no + "')";
+			
+string GET_USERS_SQL = "select * from T_USER";
+
+string DELETE_USER_SQL = "delete from T_USER where U_NO='" + user_no + "'";
+
+string GET_INSTR_SQL = "select * from T_INSTR";
+
+string GET_TASKS_SQL = "select * from T_TASK";
+
+string DELETE_TASK_SQL = "delete from T_task where T_NO='" + task_no + "'";
+
+string CHECK_LOGIN_SQL = "select * from t_user where U_USERNAME='" + username + "' and U_PASSWORD='" + password + "'";
+
+string INSERT_USER_SQL = "insert into t_user values ('" + user.getUsername() + "', '" +
+				user.getPassword() + "', '" + user.getID() + "', 'false')";
+
+string UPDATE_USER_SQL = "update t_user set U_PASSWORD='" + pw + "', U_ID='" + id + "' where U_NO ='" + user_no + "'";

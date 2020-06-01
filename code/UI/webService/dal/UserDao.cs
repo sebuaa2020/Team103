@@ -10,7 +10,7 @@ namespace our.webService.dal
 	/// <summary>
 	/// 登录后用户信息数据库接口，用于插入和查询用户
 	/// </summary>
-	interface UserDao
+	public interface UserDao
 	{
 		/// <summary>
 		/// 根据用户名密码检查登录，若查询到用户则返回该用户信息，若无结果返回null
@@ -25,6 +25,14 @@ namespace our.webService.dal
 		/// </summary>
 		/// <param name="user"></param>
 		void InsertUser(User user);
+
+		/// <summary>
+		/// 更新用户信息
+		/// </summary>
+		/// <param name="no"></param>
+		/// <param name="pw"></param>
+		/// <param name="id"></param>
+		void UpDateUser(int no, string pw, string id);
 
 	}
 }

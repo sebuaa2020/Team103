@@ -15,6 +15,7 @@ namespace our.webService.dal.imp
 	public class UserImp : UserDao
 	{
 		DataBase db = new DataBase();
+		MessageShow show = new MessageShow();
 
 		/// <summary>
 		/// 登录检查是否存在用户名
@@ -24,25 +25,32 @@ namespace our.webService.dal.imp
 		/// <returns></returns>
 		public User Login(string username, string password)
 		{
-			User user = null;
+			User user = new User(); // 实例化
 			string CHECK_LOGIN_SQL = "select * from t_user where U_USERNAME='" + username + "' and U_PASSWORD='" + password + "'";
 			SqlCommand sqlCmd = new SqlCommand(CHECK_LOGIN_SQL, db.sqlCon);
-			try
-			{
-				SqlDataReader sqlReader = sqlCmd.ExecuteReader();
-				if (sqlReader.Read())
+			
+			using (SqlDataReader sqlReader = sqlCmd.ExecuteReader()) {
+				try
 				{
-					user.setID(sqlReader["U_ID"].ToString());
-					user.setNo(Convert.ToInt32(sqlReader["U_NO"]));
-					user.setPassword(sqlReader["U_PASSWORD"].ToString());
-					user.setUsername(sqlReader["U_USERNAME"].ToString());
-					user.setType(Convert.ToBoolean(sqlReader["U_TYPE"]));
-					return user;
+					while (sqlReader.Read())
+					{
+						user.setID(Convert.ToString(sqlReader["U_ID"]));
+						user.setNo(Convert.ToInt32(sqlReader["U_NO"]));
+						user.setPassword(Convert.ToString(sqlReader["U_PASSWORD"]));
+						user.setUsername(Convert.ToString(sqlReader["U_USERNAME"]));
+						user.setType(Convert.ToBoolean(sqlReader["U_TYPE"]));
+						return user;
+					}
+					sqlReader.Close();
 				}
-			}
-			catch (SqlException e)
-			{
-				throw new Exception(e.Message);
+				catch (SqlException e)
+				{
+					throw new Exception(e.Message);
+				}
+                finally
+                {
+					Console.WriteLine("finally!");
+				}
 			}
 			return null;
 		}
@@ -54,19 +62,44 @@ namespace our.webService.dal.imp
 		public void InsertUser(User user)
 		{
 			string INSERT_USER_SQL = "insert into t_user values ('" + user.getUsername() + "', '" +
-				user.getPassword() + "', '" + user.getID() + "')";
-			SqlCommand sqlCmd = new SqlCommand(INSERT_USER_SQL, db.sqlCon);
-			try
+				user.getPassword() + "', '" + user.getID() + "', 'false')";
+			using (SqlCommand sqlCmd = new SqlCommand(INSERT_USER_SQL, db.sqlCon))
 			{
-				sqlCmd.ExecuteNonQuery();
-			}
-			catch (SqlException e)
-			{
-				MessageShow show = new MessageShow();
-				show.ErrorShow("发生错误或用户名被占用！请重新注册！");
-				throw new Exception("发生错误或用户名被占用！请重新注册！");
-			}
+				try
+				{
+					sqlCmd.ExecuteNonQuery();
+				}
+				catch (SqlException e)
+				{
+					show.ErrorShow("发生错误或用户名被占用！请重新注册！");
+					//throw new Exception("发生错误或用户名被占用！请重新注册！");
+				}
 
+			}
+		}
+
+		/// <summary>
+		/// 更新用户信息
+		/// </summary>
+		/// <param name="user_no"></param>
+		/// <param name="pw"></param>
+		/// <param name="id"></param>
+		public void UpDateUser(int user_no, string pw, string id)
+		{
+			string UPDATE_USER_SQL = "update t_user set U_PASSWORD='" + pw + "', U_ID='" + id + "' where U_NO ='" + user_no + "'";
+			using (SqlCommand sqlCmd = new SqlCommand(UPDATE_USER_SQL, db.sqlCon))
+			{
+				try
+				{
+					sqlCmd.ExecuteNonQuery();
+					show.ErrorShow("修改成功！");
+				}
+				catch (SqlException e)
+				{
+					show.ErrorShow("修改用户信息失败！");
+					throw new Exception(e.Message);
+				}
+			}
 		}
 	}
 }
