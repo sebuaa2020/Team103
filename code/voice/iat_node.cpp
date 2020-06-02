@@ -161,7 +161,6 @@ int main(int argc, char* argv[])
 	}
 
     ros::Rate r(10);
-	//int num = 0;
 	if(n.ok())
 	{
 		if(bActive == true)
