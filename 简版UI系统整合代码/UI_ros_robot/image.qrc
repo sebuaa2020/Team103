@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/~/UI_ros_robot/resource/log.ico"/>
+    <qresource prefix="/~/UI_ros_robot/resource/log.jpg"/>
+    <qresource prefix="/~/UI_ros_robot/resource/ji.jpg"/>
+</RCC>

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=ROS_assistant
+Comment=ROS_assistant V2
+Exec=/home/user/UI_ros_robot/Release/ROS_assistant.sh
+Icon=/home/user/UI_ros_robot/resource/logo.ico
+Terminal=false
+StartupNotify=true
+Type=Application
+Categories=Application;Development;
+
