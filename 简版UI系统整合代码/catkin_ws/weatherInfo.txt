@@ -1,0 +1,1 @@
+low temperature 19 high temperature 23
