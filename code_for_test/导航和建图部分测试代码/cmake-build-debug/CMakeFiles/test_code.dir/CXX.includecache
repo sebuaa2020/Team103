@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/user/test_code/nav_to_aimed_point.cpp
+navigation.h
+/home/user/test_code/navigation.h
+
+/home/user/test_code/navigation.h
+stdio.h
+-
+stdlib.h
+-
+unistd.h
+-
+fstream
+-
+iostream
+-
+sys/types.h
+-
+signal.h
+-
+cstring
+-
+sstream
+-
+
